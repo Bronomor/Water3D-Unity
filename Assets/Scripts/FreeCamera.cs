@@ -16,7 +16,6 @@ public class FreeCamera : MonoBehaviour
         normalSpeed = 0.05F;
         multiplySpeed = 3;
         mouseSpeed = 1;
-
     }
 
     void Update()

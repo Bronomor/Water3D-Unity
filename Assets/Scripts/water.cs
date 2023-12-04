@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class water : MonoBehaviour
 {
+    private float speed = 2f;
     public string Type;
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
@@ -24,11 +24,12 @@ public class water : MonoBehaviour
         Collider[] intersecting_down = Physics.OverlapSphere(new Vector3(currentPos.x, currentPos.y-1, currentPos.z), 0.01f);
 
 
-        if (intersecting_down.Length == 0)
-            add_water(new Vector3(currentPos.x, currentPos.y-1, currentPos.z));
+        //if (intersecting_down.Length == 0)
+        //   add_water(new Vector3(currentPos.x, currentPos.y-1, currentPos.z));
 
-        Destroy(this);
-        Destroy(gameObject);
+        //Destroy(this);
+        //Destroy(gameObject);
+        transform.Translate(0, -1f * Time.deltaTime * speed, 0, Space.World);
     }
 
     void add_water(Vector3 pos)
