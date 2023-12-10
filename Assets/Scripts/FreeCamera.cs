@@ -7,6 +7,7 @@ public class FreeCamera : MonoBehaviour
     public float normalSpeed;
     public float multiplySpeed;
     public float mouseSpeed;
+    public GameObject template;
 
     private Vector3 positionVector;
     private Vector3 rotationVector;
@@ -126,28 +127,93 @@ public class FreeCamera : MonoBehaviour
                 }
             }
 
-            // jesli objekt juz istnieje to nie
-
             GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
 
             float angle = Vector3.SignedAngle(hit.point, hit.collider.gameObject.transform.position, Vector3.up);
 
 
-            if( angle < 0 )
-            {
-                cube.transform.position = positionNew;
-            }
-            else
-            {
-                cube.transform.position = positionNew;
-            }
-
-
+            cube.transform.position = positionNew;
             cube.GetComponent<Renderer>().material.color = Color.blue;
 
             string ScriptName = "water";
             System.Type MyScriptType = System.Type.GetType (ScriptName + ",Assembly-CSharp");
             cube.AddComponent(MyScriptType);
+        }
+
+        if (Input.GetButtonDown("Fire2"))
+        {
+            // Raycast
+            int layerMask = 1 << 8;
+            layerMask = ~layerMask;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit, 100))
+            {
+                if (hit.collider != null)
+                {
+                    string RaycastReturn = hit.collider.gameObject.name;
+                }
+            }
+            else
+            {
+                Debug.Log("Mouse not Hit");
+            }
+
+            Vector3 hitDirection = hit.point - hit.transform.position;
+
+            float upWeight = Vector3.Dot(hitDirection, hit.transform.up);
+            float forwardWeight = Vector3.Dot(hitDirection, hit.transform.forward);
+            float rightWeight = Vector3.Dot(hitDirection, hit.transform.right);
+
+            
+            //We care about the absolute value only for now
+            float upMag = Mathf.Abs(upWeight);
+            float forwardMag = Mathf.Abs(forwardWeight);
+            float rightMag = Mathf.Abs(rightWeight);
+
+            Vector3 positionNew;
+
+            if(upMag >= forwardMag && upMag >= rightMag)
+            {
+                if(upWeight > 0) 
+                {
+                    positionNew = new Vector3(hit.collider.gameObject.transform.position.x, hit.collider.gameObject.transform.position.y+1, hit.collider.gameObject.transform.position.z);
+                    // Debug.Log("Gora"); //Up
+                }
+                else 
+                {
+                    positionNew = new Vector3(hit.collider.gameObject.transform.position.x, hit.collider.gameObject.transform.position.y-1, hit.collider.gameObject.transform.position.z);
+                    //Debug.Log("Dol"); //Down
+                }
+            }
+            else if(forwardMag >= upMag && forwardMag >= rightMag)
+            {
+                if(forwardWeight > 0) 
+                {
+                    positionNew = new Vector3(hit.collider.gameObject.transform.position.x, hit.collider.gameObject.transform.position.y, hit.collider.gameObject.transform.position.z+1);
+                    //Debug.Log("Przod"); //Forward
+                }
+                else  
+                {
+                    positionNew = new Vector3(hit.collider.gameObject.transform.position.x, hit.collider.gameObject.transform.position.y, hit.collider.gameObject.transform.position.z-1);
+                    //Debug.Log("Tyl"); //Back
+                }
+            }
+            else
+            {
+                if(rightWeight > 0) 
+                {
+                    positionNew = new Vector3(hit.collider.gameObject.transform.position.x+1, hit.collider.gameObject.transform.position.y, hit.collider.gameObject.transform.position.z);
+                    //Debug.Log("Prawo"); //Right
+                }
+                else 
+                {
+                    positionNew = new Vector3(hit.collider.gameObject.transform.position.x-1, hit.collider.gameObject.transform.position.y, hit.collider.gameObject.transform.position.z);
+                    //Debug.Log("Lewo"); //Left
+                }
+            }
+            Instantiate(template, positionNew, Quaternion.identity);
+            
         }
 
     }

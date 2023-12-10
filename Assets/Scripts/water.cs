@@ -25,6 +25,18 @@ public class water : MonoBehaviour
 
         if (intersecting_down.Length == 0)
            transform.Translate(0, -1f * Time.deltaTime * speed, 0, Space.World);
+        else if (intersecting_down.Length > 0)
+        {
+            //transform.Translate(-1f * Time.deltaTime * speed, 0, 0, Space.World);
+            //transform.Translate( 1f * Time.deltaTime * speed, 0, 0, Space.World);
+            //transform.Translate(0, 0, -1f * Time.deltaTime * speed, Space.World);
+            //transform.Translate(0, 0, -1f * Time.deltaTime * speed, Space.World);
+
+            //add_water(new Vector3(currentPos.x+1, currentPos.y, currentPos.z));
+            //add_water(new Vector3(currentPos.x-1, currentPos.y, currentPos.z));
+            //add_water(new Vector3(currentPos.x, currentPos.y, currentPos.z-1));
+            //add_water(new Vector3(currentPos.x, currentPos.y, currentPos.z+1));
+        }
 
         //Destroy(this);
         //Destroy(gameObject);
