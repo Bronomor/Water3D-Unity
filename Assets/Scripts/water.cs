@@ -14,7 +14,6 @@ public class water : MonoBehaviour
     // Update is called once per frame
     void Update()
     {  
-        Debug.Log("water1");
         Vector3 currentPos = transform.position;
 
         Collider[] intersecting_right = Physics.OverlapSphere(new Vector3(currentPos.x+1, currentPos.y, currentPos.z), 0.01f);
@@ -24,12 +23,12 @@ public class water : MonoBehaviour
         Collider[] intersecting_down = Physics.OverlapSphere(new Vector3(currentPos.x, currentPos.y-1, currentPos.z), 0.01f);
 
 
-        //if (intersecting_down.Length == 0)
-        //   add_water(new Vector3(currentPos.x, currentPos.y-1, currentPos.z));
+        if (intersecting_down.Length == 0)
+           transform.Translate(0, -1f * Time.deltaTime * speed, 0, Space.World);
 
         //Destroy(this);
         //Destroy(gameObject);
-        transform.Translate(0, -1f * Time.deltaTime * speed, 0, Space.World);
+        //add_water(new Vector3(currentPos.x, currentPos.y-1, currentPos.z));
     }
 
     void add_water(Vector3 pos)

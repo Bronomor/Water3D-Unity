@@ -62,48 +62,93 @@ public class FreeCamera : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, 100))
             {
-                //Debug.DrawRay(Input.mousePosition, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
-                Debug.Log("Mouse Did Hit");
-                Debug.Log(hit);
                 if (hit.collider != null)
                 {
                     string RaycastReturn = hit.collider.gameObject.name;
-                    Debug.Log("did hit");
-                    Debug.Log(hit.collider.gameObject.transform.position);
-                    Debug.Log(RaycastReturn);
-                    Debug.Log(RaycastReturn);
                 }
             }
             else
             {
-                //Debug.DrawRay(Input.mousePosition, transform.TransformDirection(Vector3.forward) * 1000, Color.white);
                 Debug.Log("Mouse not Hit");
+            }
+
+            Vector3 hitDirection = hit.point - hit.transform.position;
+
+            float upWeight = Vector3.Dot(hitDirection, hit.transform.up);
+            float forwardWeight = Vector3.Dot(hitDirection, hit.transform.forward);
+            float rightWeight = Vector3.Dot(hitDirection, hit.transform.right);
+
+            
+            //We care about the absolute value only for now
+            float upMag = Mathf.Abs(upWeight);
+            float forwardMag = Mathf.Abs(forwardWeight);
+            float rightMag = Mathf.Abs(rightWeight);
+
+            Vector3 positionNew;
+
+            if(upMag >= forwardMag && upMag >= rightMag)
+            {
+                if(upWeight > 0) 
+                {
+                    positionNew = new Vector3(hit.collider.gameObject.transform.position.x, hit.collider.gameObject.transform.position.y+1, hit.collider.gameObject.transform.position.z);
+                    // Debug.Log("Gora"); //Up
+                }
+                else 
+                {
+                    positionNew = new Vector3(hit.collider.gameObject.transform.position.x, hit.collider.gameObject.transform.position.y-1, hit.collider.gameObject.transform.position.z);
+                    //Debug.Log("Dol"); //Down
+                }
+            }
+            else if(forwardMag >= upMag && forwardMag >= rightMag)
+            {
+                if(forwardWeight > 0) 
+                {
+                    positionNew = new Vector3(hit.collider.gameObject.transform.position.x, hit.collider.gameObject.transform.position.y, hit.collider.gameObject.transform.position.z+1);
+                    //Debug.Log("Przod"); //Forward
+                }
+                else  
+                {
+                    positionNew = new Vector3(hit.collider.gameObject.transform.position.x, hit.collider.gameObject.transform.position.y, hit.collider.gameObject.transform.position.z-1);
+                    //Debug.Log("Tyl"); //Back
+                }
+            }
+            else
+            {
+                if(rightWeight > 0) 
+                {
+                    positionNew = new Vector3(hit.collider.gameObject.transform.position.x+1, hit.collider.gameObject.transform.position.y, hit.collider.gameObject.transform.position.z);
+                    //Debug.Log("Prawo"); //Right
+                }
+                else 
+                {
+                    positionNew = new Vector3(hit.collider.gameObject.transform.position.x-1, hit.collider.gameObject.transform.position.y, hit.collider.gameObject.transform.position.z);
+                    //Debug.Log("Lewo"); //Left
+                }
             }
 
             // jesli objekt juz istnieje to nie
 
-
-            // Vector3.angleBetween(cube.position, hit.position) <- to defect which face to hit
             GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            cube.transform.position = new Vector3(hit.collider.gameObject.transform.position.x, hit.collider.gameObject.transform.position.y, hit.collider.gameObject.transform.position.z-1);
+
+            float angle = Vector3.SignedAngle(hit.point, hit.collider.gameObject.transform.position, Vector3.up);
+
+
+            if( angle < 0 )
+            {
+                cube.transform.position = positionNew;
+            }
+            else
+            {
+                cube.transform.position = positionNew;
+            }
+
+
             cube.GetComponent<Renderer>().material.color = Color.blue;
 
             string ScriptName = "water";
             System.Type MyScriptType = System.Type.GetType (ScriptName + ",Assembly-CSharp");
             cube.AddComponent(MyScriptType);
         }
-
-        /**RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity, layerMask))
-        {
-            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
-            //Debug.Log("Did Hit");
-        }
-        else
-        {
-            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 1000, Color.white);
-            //Debug.Log("Did not Hit");
-        }*/
 
     }
 
