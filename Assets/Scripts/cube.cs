@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class cube : MonoBehaviour
 {
-    public string Type;
     // Start is called before the first frame update
     void Start()
     {
+        // this.gameObject.tag = "Stone";
     }
 
     // Update is called once per frame
     void Update()
-    {  
+    {
     }
 }
