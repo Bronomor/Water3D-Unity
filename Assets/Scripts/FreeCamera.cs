@@ -26,9 +26,9 @@ public class FreeCamera : MonoBehaviour
     void Update()
     {
         // Position
-        // positionVector.x = Input.GetAxis("Horizontal");
-        // positionVector.y = Input.GetAxis("Updown");
-        // positionVector.z = Input.GetAxis("Vertical");
+        positionVector.x = Input.GetAxis("Horizontal");
+        positionVector.y = Input.GetAxis("Updown");
+        positionVector.z = Input.GetAxis("Vertical");
 
         positionVector *= normalSpeed;
 
