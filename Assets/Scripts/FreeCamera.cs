@@ -7,10 +7,14 @@ public class FreeCamera : MonoBehaviour
     public float normalSpeed;
     public float multiplySpeed;
     public float mouseSpeed;
-    public GameObject template;
 
     private Vector3 positionVector;
     private Vector3 rotationVector;
+
+    [SerializeField]
+    private GameObject cobblestonePrefab;
+    [SerializeField]
+    private GameObject waterPrefab;
 
     void Start()
     {
@@ -22,9 +26,9 @@ public class FreeCamera : MonoBehaviour
     void Update()
     {
         // Position
-        positionVector.x = Input.GetAxis("Horizontal");
-        positionVector.y = Input.GetAxis("Updown");
-        positionVector.z = Input.GetAxis("Vertical");
+        // positionVector.x = Input.GetAxis("Horizontal");
+        // positionVector.y = Input.GetAxis("Updown");
+        // positionVector.z = Input.GetAxis("Vertical");
 
         positionVector *= normalSpeed;
 
@@ -127,17 +131,9 @@ public class FreeCamera : MonoBehaviour
                 }
             }
 
-            GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
 
             float angle = Vector3.SignedAngle(hit.point, hit.collider.gameObject.transform.position, Vector3.up);
-
-
-            cube.transform.position = positionNew;
-            cube.GetComponent<Renderer>().material.color = Color.blue;
-
-            string ScriptName = "water";
-            System.Type MyScriptType = System.Type.GetType (ScriptName + ",Assembly-CSharp");
-            cube.AddComponent(MyScriptType);
+            Instantiate(waterPrefab, positionNew, Quaternion.identity);
         }
 
         if (Input.GetButtonDown("Fire2"))
@@ -212,7 +208,7 @@ public class FreeCamera : MonoBehaviour
                     //Debug.Log("Lewo"); //Left
                 }
             }
-            Instantiate(template, positionNew, Quaternion.identity);
+            Instantiate(cobblestonePrefab, positionNew, Quaternion.identity);
             
         }
 
