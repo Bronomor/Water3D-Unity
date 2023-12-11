@@ -682,7 +682,8 @@ MonoBehaviour:
   normalSpeed: 0
   multiplySpeed: 0
   mouseSpeed: 0
-  template: {fileID: 366642049737166233, guid: c825755bbedf1994eb6071e605d1316d, type: 3}
+  cobblestonePrefab: {fileID: 366642049737166233, guid: c825755bbedf1994eb6071e605d1316d, type: 3}
+  waterPrefab: {fileID: 1127116393281085592, guid: 64c5aab02393af047927788baf34b257, type: 3}
 --- !u!1 &1437751834
 GameObject:
   m_ObjectHideFlags: 0

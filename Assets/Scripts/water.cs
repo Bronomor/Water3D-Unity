@@ -5,7 +5,6 @@ using UnityEngine;
 public class water : MonoBehaviour
 {
     private float speed = 2f;
-    public string Type;
     // Start is called before the first frame update
     void Start()
     {
@@ -43,14 +42,4 @@ public class water : MonoBehaviour
         //add_water(new Vector3(currentPos.x, currentPos.y-1, currentPos.z));
     }
 
-    void add_water(Vector3 pos)
-    {
-        GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        cube.transform.position = pos;
-        cube.GetComponent<Renderer>().material.color = Color.blue;
-
-        string ScriptName = "water";
-        System.Type MyScriptType = System.Type.GetType (ScriptName + ",Assembly-CSharp");
-        cube.AddComponent(MyScriptType);
-    }
 }
